@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guessing Game 0d8d5b44</title>
+    <title>Guessing Game</title>
 </head>
 <body>
     <h1>Guess the Number!</h1>
-    
+
     <form method="POST">
         <label for="guess">Enter your guess:</label>
         <input type="text" id="guess" name="guess" required>
@@ -15,8 +15,8 @@
     </form>
 
     <?php
-    $correct_answer = 38;
-    
+    $correct_answer = 38; // Correct number
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $guess = $_POST['guess'] ?? '';
 
@@ -25,16 +25,17 @@
         } elseif (!is_numeric($guess)) {
             echo "<p style='color:red;'>Your guess is not a number.</p>";
         } else {
-            $guess = intval($guess); // Convert to integer
+            $guess = intval($guess); // Convert input to an integer
             if ($guess < $correct_answer) {
                 echo "<p>Your guess is too low.</p>";
             } elseif ($guess > $correct_answer) {
                 echo "<p>Your guess is too high.</p>";
             } else {
-                echo "<p style='color:green;'>Congratulations - You are right!</p>";
+                echo "<p style='color:green; font-weight:bold;'>Congratulations - You are right!</p>";
             }
         }
     }
     ?>
+
 </body>
 </html>
