@@ -1,32 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Guessing Game - 0d8d5b44</title>
-</head>
-<body>
-    <h1>Welcome to the Guessing Game</h1>
-    <p>Try to guess the correct number!</p>
+<?php
+$correct_answer = 38;
+$feedback = "";
 
-    <form method="get">
-        <label for="guess">Enter your guess:</label>
-        <input type="text" name="guess" id="guess">
-        <input type="submit" value="Submit">
-    </form>
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $guess = $_POST['guess'] ?? '';
 
-    <?php
-    if (isset($_GET['guess'])) {
-        $guess = $_GET['guess'];
-
-        if (!is_numeric($guess)) {
-            echo "<p>Please enter a valid number.</p>";
-        } elseif ($guess < 38) {
-            echo "<p>Your guess is too low.</p>";
-        } elseif ($guess > 38) {
-            echo "<p>Your guess is too high.</p>";
+    if (empty($guess)) {
+        $feedback = "<p style='color:red;'>Missing guess parameter.</p>";
+    } elseif (!is_numeric($guess)) {
+        $feedback = "<p style='color:red;'>Your guess is not a number.</p>";
+    } else {
+        $guess = intval($guess); // Convert input to an integer
+        if ($guess < $correct_answer) {
+            $feedback = "<p>Your guess is too low.</p>";
+        } elseif ($guess > $correct_answer) {
+            $feedback = "<p>Your guess is too high.</p>";
         } else {
-            echo "<p>Congratulations! You guessed correctly.</p>";
+            $feedback = "<p style='color:green; font-weight:bold;'>Congratulations - You are right!</p>";
         }
     }
-    ?>
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guessing Game Result</title>
+</head>
+<body>
+    <h1>Guess the Number!</h1>
+
+    <form method="POST" action="index.php">
+        <label for="guess">Enter your guess:</label>
+        <input type="text" id="guess" name="guess" required>
+        <input type="submit" value="Submit Guess">
+    </form>
+
+    <?= $feedback; ?>
+
 </body>
 </html>
